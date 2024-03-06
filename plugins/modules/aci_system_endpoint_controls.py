@@ -26,7 +26,7 @@ options:
         description:
         - Whether to enable IP Aging Controls on the fabric.
         type: bool
-  roque_ep_control:
+  rogue_ep_control:
     description: Configuration container for Rogue EP Control.
     type: dict
     suboptions:
@@ -98,7 +98,7 @@ EXAMPLES = r"""
     admin_state: true
     ip_aging:
       admin_state: true
-    roque_ep_control:
+    rogue_ep_control:
       admin_state: true
       interval: 50
       multiplication_factor: 10
@@ -237,7 +237,7 @@ def main():
     argument_spec.update(aci_owner_spec())
     argument_spec.update(
         ip_aging=dict(type="dict", options=dict(admin_state=dict(type="bool"))),
-        roque_ep_control=dict(
+        rogue_ep_control=dict(
             type="dict",
             options=dict(
                 admin_state=dict(type="bool"),
@@ -261,7 +261,7 @@ def main():
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
-        required_if=[["state", "present", ["ip_aging", "roque_ep_control", "ep_loop_protection"], True]],
+        required_if=[["state", "present", ["ip_aging", "rogue_ep_control", "ep_loop_protection"], True]],
     )
 
     aci = ACIModule(module)
@@ -280,7 +280,7 @@ def main():
     if state == "present":
         child_configs = []
         ip_aging = module.params.get("ip_aging")
-        roque_ep_control = module.params.get("roque_ep_control")
+        rogue_ep_control = module.params.get("rogue_ep_control")
         ep_loop_protection = module.params.get("ep_loop_protection")
 
         if ip_aging:
@@ -288,16 +288,16 @@ def main():
                 {"epIpAgingP": {"attributes": {"name": "default", "adminSt": aci.boolean(ip_aging.get("admin_state"), "enabled", "disabled")}}}
             )
 
-        if roque_ep_control:
+        if rogue_ep_control:
             child_configs.append(
                 {
                     "epControlP": {
                         "attributes": {
                             "name": "default",
-                            "adminSt": aci.boolean(roque_ep_control.get("admin_state"), "enabled", "disabled"),
-                            "rogueEpDetectIntvl": roque_ep_control.get("interval"),
-                            "rogueEpDetectMult": roque_ep_control.get("multiplication_factor"),
-                            "holdIntvl": roque_ep_control.get("hold_interval"),
+                            "adminSt": aci.boolean(rogue_ep_control.get("admin_state"), "enabled", "disabled"),
+                            "rogueEpDetectIntvl": rogue_ep_control.get("interval"),
+                            "rogueEpDetectMult": rogue_ep_control.get("multiplication_factor"),
+                            "holdIntvl": rogue_ep_control.get("hold_interval"),
                         }
                     }
                 }
