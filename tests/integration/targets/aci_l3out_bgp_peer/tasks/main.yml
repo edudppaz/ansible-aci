@@ -1528,10 +1528,6 @@
     check_mode: true
     register: add_dyn_bgp_peer_check
 
-  - name: debug check mode
-    ansible.builtin.debug:
-      var: add_dyn_bgp_peer_check
-
   - name: Verify add dynamic bgp peer (prefix) to ethernet port - check mode
     ansible.builtin.assert:
       that:
@@ -1664,7 +1660,7 @@
       that:
         - query_all_dyn_bgp_peer is not changed
         - query_all_dyn_bgp_peer.current | length >= 1
-        - query_all_dyn_bgp_peer.current.0.bgpPeerP.attributes.dn == "uni/tn-ansible_tenant/out-ansible_l3out/lnodep-ansible_node_profile/lifp-ansible_interface_profile/rspathL3OutAtt-[topology/pod-1/paths-201/pathep-[eth1/15]]/peerP-[192.168.50.2]"
+        - query_all_dyn_bgp_peer.current.0.bgpPeerP.attributes.dn == "uni/tn-ansible_tenant/out-ansible_l3out/lnodep-ansible_node_profile/lifp-ansible_interface_profile/rspathL3OutAtt-[topology/pod-1/paths-201/pathep-[eth1/15]]/peerP-[192.168.50.3]"
         - query_all_dyn_bgp_peer.current.0.bgpPeerP.attributes.addr == "192.168.50.3"
         - query_all_dyn_bgp_peer.current.0.bgpPeerP.attributes.addrTCtrl == "af-ucast"
         - query_all_dyn_bgp_peer.current.0.bgpPeerP.attributes.adminSt == "enabled"
